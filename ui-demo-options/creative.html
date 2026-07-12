@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Menu đặt món online - Tiện Cafe Góc Nhỏ">
+    <title>Tiện Cafe Góc Nhỏ - Menu</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; }
+
+        /* ui-ux-pro-max: Priority 1 - Accessibility */
+        *:focus-visible {
+            outline: 3px solid #8B5CF6;
+            outline-offset: 2px;
+        }
+
+        /* Gradient background */
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        /* Glass morphism effect - ui-ux-pro-max: modern style */
+        .glass {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+
+        /* Animations with reduced-motion support */
+        @media (prefers-reduced-motion: no-preference) {
+            @keyframes slideUp {
+                from { opacity: 0; transform: translateY(20px); }
+                to { opacity: 1; transform: translateY(0); }
+            }
+            .animate-slideUp { animation: slideUp 0.4s ease-out; }
+
+            @keyframes pulse-subtle {
+                0%, 100% { transform: scale(1); }
+                50% { transform: scale(1.05); }
+            }
+            .animate-pulse-subtle { animation: pulse-subtle 2s infinite; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .animate-slideUp, .animate-pulse-subtle { animation: none; }
+        }
+
+        /* Custom scrollbar - ui-ux-pro-max: visual enhancement */
+        .custom-scrollbar::-webkit-scrollbar {
+            height: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f5f9;
+            border-radius: 10px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #8B5CF6;
+            border-radius: 10px;
+        }
+
+        /* Hide scrollbar for mobile */
+        @media (max-width: 640px) {
+            .custom-scrollbar::-webkit-scrollbar { display: none; }
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-purple-50 via-white to-blue-50">
+
+    <!-- Floating Header - ui-ux-pro-max: 44px+ touch targets -->
+    <header class="fixed top-4 left-4 right-4 z-50 glass rounded-2xl shadow-xl max-w-7xl mx-auto" role="banner">
+        <div class="flex items-center justify-between px-4 py-3">
+            <!-- Logo + Brand -->
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 bg-gradient-to-br from-purple-500 to-indigo-600 rounded-xl flex items-center justify-center shadow-md" aria-hidden="true">
+                    <span class="text-white text-xl" role="img" aria-label="Coffee">☕</span>
+                </div>
+                <div>
+                    <h1 class="text-base font-bold text-gray-900 leading-tight">Tiện Cafe</h1>
+                    <p class="text-xs text-gray-600">Góc Nhỏ</p>
+                </div>
+            </div>
+
+            <!-- Cart Button - ui-ux-pro-max: 44x44px min, aria-label -->
+            <button
+                id="cartBtn"
+                class="relative min-w-[44px] min-h-[44px] px-4 py-2 bg-gradient-to-r from-purple-500 to-indigo-600 text-white rounded-xl font-medium text-sm shadow-md hover:shadow-lg transition-all cursor-pointer"
+                aria-label="Giỏ hàng"
+                type="button"
+            >
+                <span class="flex items-center gap-2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
+                    </svg>
+                    <span id="cartCount" class="hidden font-semibold">0</span>
+                </span>
+                <span id="cartBadge" class="hidden absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold px-2 py-0.5 rounded-full min-w-[20px] text-center animate-pulse-subtle" aria-live="polite">0</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="pt-24 pb-8 px-4 max-w-7xl mx-auto" role="main">
+
+        <!-- Search Bar - ui-ux-pro-max: 44px+ min-height -->
+        <div class="mb-6 animate-slideUp" role="search">
+            <div class="relative max-w-2xl mx-auto">
+                <label for="searchInput" class="sr-only">Tìm kiếm món yêu thích</label>
+                <input
+                    id="searchInput"
+                    type="search"
+                    placeholder="Tìm món yêu thích của bạn..."
+                    class="w-full min-h-[48px] pl-14 pr-4 bg-white rounded-2xl border-2 border-gray-200 focus:border-purple-500 focus:outline-none text-base shadow-sm transition-all"
+                    autocomplete="off"
+                />
+                <svg class="absolute left-5 top-1/2 -translate-y-1/2 w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                </svg>
+            </div>
+        </div>
+
+        <!-- Welcome Message -->
+        <div class="mb-6 text-center animate-slideUp" style="animation-delay: 0.1s">
+            <h2 class="text-2xl font-bold text-gray-900 mb-1">Chào mừng bạn! <span aria-hidden="true">☀️</span></h2>
+            <p class="text-sm text-gray-600">22 món đặc biệt đang chờ bạn khám phá</p>
+        </div>
+
+        <!-- Category Pills - ui-ux-pro-max: 44px+ touch targets -->
+        <nav class="mb-6 animate-slideUp" style="animation-delay: 0.2s" aria-label="Danh mục món">
+            <div class="flex gap-2 overflow-x-auto pb-2 custom-scrollbar">
+                <button
+                    data-category="all"
+                    class="category-pill active min-h-[44px] px-5 py-2.5 bg-gradient-to-r from-purple-500 to-indigo-600 text-white rounded-full font-medium text-sm whitespace-nowrap shadow-md transition-all cursor-pointer"
+                    type="button"
+                >
+                    <span aria-hidden="true">✨</span> Tất cả
+                </button>
+                <button data-category="cafe" class="category-pill min-h-[44px] px-5 py-2.5 bg-white text-gray-700 rounded-full font-medium text-sm whitespace-nowrap shadow-sm hover:shadow-md border border-gray-200 transition-all cursor-pointer" type="button">
+                    <span aria-hidden="true">☕</span> Cà phê
+                </button>
+                <button data-category="tra" class="category-pill min-h-[44px] px-5 py-2.5 bg-white text-gray-700 rounded-full font-medium text-sm whitespace-nowrap shadow-sm hover:shadow-md border border-gray-200 transition-all cursor-pointer" type="button">
+                    <span aria-hidden="true">🍵</span> Trà
+                </button>
+                <button data-category="sinhtố" class="category-pill min-h-[44px] px-5 py-2.5 bg-white text-gray-700 rounded-full font-medium text-sm whitespace-nowrap shadow-sm hover:shadow-md border border-gray-200 transition-all cursor-pointer" type="button">
+                    <span aria-hidden="true">🥤</span> Sinh tố
+                </button>
+                <button data-category="đaxay" class="category-pill min-h-[44px] px-5 py-2.5 bg-white text-gray-700 rounded-full font-medium text-sm whitespace-nowrap shadow-sm hover:shadow-md border border-gray-200 transition-all cursor-pointer" type="button">
+                    <span aria-hidden="true">🧊</span> Đá xay
+                </button>
+                <button data-category="nuocep" class="category-pill min-h-[44px] px-5 py-2.5 bg-white text-gray-700 rounded-full font-medium text-sm whitespace-nowrap shadow-sm hover:shadow-md border border-gray-200 transition-all cursor-pointer" type="button">
+                    <span aria-hidden="true">🍊</span> Nước ép
+                </button>
+                <button data-category="banhngot" class="category-pill min-h-[44px] px-5 py-2.5 bg-white text-gray-700 rounded-full font-medium text-sm whitespace-nowrap shadow-sm hover:shadow-md border border-gray-200 transition-all cursor-pointer" type="button">
+                    <span aria-hidden="true">🍰</span> Bánh ngọt
+                </button>
+                <button data-category="annhe" class="category-pill min-h-[44px] px-5 py-2.5 bg-white text-gray-700 rounded-full font-medium text-sm whitespace-nowrap shadow-sm hover:shadow-md border border-gray-200 transition-all cursor-pointer" type="button">
+                    <span aria-hidden="true">🥖</span> Ăn nhẹ
+                </button>
+            </div>
+        </nav>
+
+        <!-- Menu Grid -->
+        <div id="menuGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+            <!-- Items rendered by JS -->
+        </div>
+
+        <!-- Empty State -->
+        <div id="emptyState" class="hidden text-center py-16" role="status">
+            <div class="text-7xl mb-4" aria-hidden="true">🔍</div>
+            <p class="text-gray-500 text-lg font-medium mb-2">Không tìm thấy món nào</p>
+            <p class="text-gray-400 text-sm">Thử từ khóa khác nhé!</p>
+        </div>
+    </main>
+
+    <!-- Toast Notification - ui-ux-pro-max: aria-live -->
+    <div
+        id="toast"
+        class="fixed bottom-6 left-1/2 -translate-x-1/2 bg-gradient-to-r from-green-500 to-emerald-600 text-white px-6 py-3 rounded-2xl shadow-xl hidden z-50 transition-all font-medium"
+        role="status"
+        aria-live="polite"
+    >
+        <div class="flex items-center gap-2">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+            </svg>
+            <p id="toastMsg"></p>
+        </div>
+    </div>
+
+    <script>
+        // Menu Data - 22 món với emoji
+        const menuData = [
+            // Cà phê (5) - ui-ux-pro-max: decorative emoji OK (not as icons)
+            { id: 1, name: "Cà phê đen", category: "cafe", prices: { S: 25000, M: 30000, L: 35000 }, emoji: "☕", desc: "Đậm đà truyền thống", popular: true },
+            { id: 2, name: "Cà phê sữa", category: "cafe", prices: { S: 28000, M: 33000, L: 38000 }, emoji: "☕", desc: "Best seller của quán", popular: true },
+            { id: 3, name: "Bạc xỉu", category: "cafe", prices: { S: 28000, M: 33000, L: 38000 }, emoji: "🥛", desc: "Nhẹ nhàng dễ uống" },
+            { id: 4, name: "Cà phê trứng", category: "cafe", prices: { M: 38000 }, emoji: "🥚", desc: "Đặc sản Hà Nội", popular: true },
+            { id: 5, name: "Cà phê cốt dừa", category: "cafe", prices: { M: 35000, L: 40000 }, emoji: "🥥", desc: "Béo ngậy độc đáo" },
+            // Trà (5)
+            { id: 6, name: "Trà đào", category: "tra", prices: { M: 35000, L: 40000 }, emoji: "🍑", desc: "Thanh mát giải nhiệt", popular: true },
+            { id: 7, name: "Trà vải", category: "tra", prices: { M: 35000, L: 40000 }, emoji: "🍇", desc: "Ngọt thanh tự nhiên" },
+            { id: 8, name: "Trà chanh mật ong", category: "tra", prices: { M: 30000, L: 35000 }, emoji: "🍋", desc: "Vitamin C tự nhiên" },
+            { id: 9, name: "Trà sữa ô long", category: "tra", prices: { S: 32000, M: 38000, L: 42000 }, emoji: "🧋", desc: "Thơm lừng tinh tế", popular: true },
+            { id: 10, name: "Trà sữa matcha", category: "tra", prices: { M: 40000, L: 45000 }, emoji: "🍵", desc: "Matcha Nhật cao cấp" },
+            // Sinh tố (3)
+            { id: 11, name: "Sinh tố bơ", category: "sinhtố", prices: { M: 40000, L: 45000 }, emoji: "🥑", desc: "Bơ sáp Đà Lạt" },
+            { id: 12, name: "Sinh tố xoài", category: "sinhtố", prices: { M: 38000, L: 43000 }, emoji: "🥭", desc: "Xoài chín ngọt lịm", popular: true },
+            { id: 13, name: "Sinh tố dâu", category: "sinhtố", prices: { M: 40000, L: 45000 }, emoji: "🍓", desc: "Dâu tây tươi mát" },
+            // Đá xay (3)
+            { id: 14, name: "Đá xay cà phê", category: "đaxay", prices: { M: 42000, L: 47000 }, emoji: "❄️", desc: "Mát lạnh ngày hè" },
+            { id: 15, name: "Đá xay trà xanh", category: "đaxay", prices: { M: 42000, L: 47000 }, emoji: "🍃", desc: "Matcha mịn tan" },
+            { id: 16, name: "Đá xay socola", category: "đaxay", prices: { M: 42000, L: 47000 }, emoji: "🍫", desc: "Socola đắng vừa phải" },
+            // Nước ép (3)
+            { id: 17, name: "Nước ép cam tươi", category: "nuocep", prices: { M: 35000, L: 40000 }, emoji: "🍊", desc: "Cam Vinh tươi vắt", popular: true },
+            { id: 18, name: "Nước ép ổi", category: "nuocep", prices: { M: 30000, L: 35000 }, emoji: "🍐", desc: "Ổi ruột đỏ thơm" },
+            { id: 19, name: "Nước ép dưa hấu", category: "nuocep", prices: { M: 30000, L: 35000 }, emoji: "🍉", desc: "Ngọt mát tự nhiên" },
+            // Bánh ngọt (2)
+            { id: 20, name: "Bánh flan", category: "banhngot", prices: { M: 15000 }, emoji: "🍮", desc: "Caramel béo mịn" },
+            { id: 21, name: "Tiramisu", category: "banhngot", prices: { M: 30000 }, emoji: "🍰", desc: "Chuẩn vị Ý" },
+            // Ăn nhẹ (1)
+            { id: 22, name: "Bánh mì nướng muối ớt", category: "annhe", prices: { M: 20000 }, emoji: "🥖", desc: "Giòn tan nóng hổi" }
+        ];
+
+        // State
+        let cart = JSON.parse(localStorage.getItem('cart') || '[]');
+        let activeCategory = 'all';
+        let searchQuery = '';
+
+        // Helpers
+        function formatPrice(price) {
+            return Math.floor(price/1000) + 'K';
+        }
+
+        function getPriceDisplay(prices) {
+            const values = Object.values(prices);
+            if (values.length === 1) return formatPrice(values[0]);
+            return `${formatPrice(Math.min(...values))} - ${formatPrice(Math.max(...values))}`;
+        }
+
+        function removeVietnameseTones(str) {
+            return str.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
+        }
+
+        // Render menu
+        function renderMenu() {
+            const grid = document.getElementById('menuGrid');
+            const empty = document.getElementById('emptyState');
+
+            let items = menuData.filter(item => {
+                if (activeCategory !== 'all' && item.category !== activeCategory) return false;
+                if (searchQuery) {
+                    const query = removeVietnameseTones(searchQuery);
+                    const name = removeVietnameseTones(item.name);
+                    if (!name.includes(query)) return false;
+                }
+                return true;
+            });
+
+            if (items.length === 0) {
+                grid.classList.add('hidden');
+                empty.classList.remove('hidden');
+                return;
+            }
+
+            grid.classList.remove('hidden');
+            empty.classList.add('hidden');
+
+            grid.innerHTML = items.map((item, index) => `
+                <article class="bg-white rounded-2xl p-4 shadow-md hover:shadow-xl transition-all animate-slideUp cursor-pointer" style="animation-delay: ${index * 0.05}s">
+                    ${item.popular ? '<div class="inline-block px-3 py-1 bg-gradient-to-r from-orange-400 to-pink-500 text-white text-xs font-semibold rounded-full mb-2"><span aria-hidden="true">🔥</span> Popular</div>' : ''}
+
+                    <div class="flex items-start justify-between mb-3">
+                        <div class="flex-1">
+                            <div class="flex items-center gap-2 mb-1">
+                                <span class="text-3xl" role="img" aria-label="${item.name}">${item.emoji}</span>
+                                <h3 class="font-bold text-gray-900 text-base leading-tight">${item.name}</h3>
+                            </div>
+                            <p class="text-xs text-gray-500 mb-2">${item.desc}</p>
+                            <div class="flex items-baseline gap-1">
+                                <span class="text-xl font-bold bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent">
+                                    ${getPriceDisplay(item.prices)}
+                                </span>
+                                ${Object.keys(item.prices).length > 1 ? '<span class="text-xs text-gray-400">• Nhiều size</span>' : ''}
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Add button - ui-ux-pro-max: 44px+ min-height -->
+                    <button
+                        onclick="addToCart(${item.id})"
+                        class="w-full min-h-[44px] py-2.5 bg-gradient-to-r from-purple-500 to-indigo-600 hover:from-purple-600 hover:to-indigo-700 text-white font-semibold rounded-xl transition-all shadow-md hover:shadow-lg flex items-center justify-center gap-2 cursor-pointer"
+                        aria-label="Thêm ${item.name} vào giỏ hàng"
+                        type="button"
+                    >
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                        </svg>
+                        Thêm vào giỏ
+                    </button>
+                </article>
+            `).join('');
+        }
+
+        // Add to cart
+        function addToCart(itemId) {
+            const item = menuData.find(i => i.id === itemId);
+            const size = item.prices.M ? 'M' : Object.keys(item.prices)[0];
+            const price = item.prices[size];
+
+            cart.push({ id: item.id, name: item.name, size, price, quantity: 1 });
+            localStorage.setItem('cart', JSON.stringify(cart));
+            updateCartBadge();
+            showToast(`✓ ${item.name} đã thêm vào giỏ`);
+        }
+
+        // Update cart badge
+        function updateCartBadge() {
+            const badge = document.getElementById('cartBadge');
+            const count = document.getElementById('cartCount');
+            const cartLength = cart.length;
+
+            if (cartLength > 0) {
+                badge.textContent = cartLength;
+                badge.classList.remove('hidden');
+                count.textContent = cartLength;
+                count.classList.remove('hidden');
+            } else {
+                badge.classList.add('hidden');
+                count.classList.add('hidden');
+            }
+        }
+
+        // Show toast
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            const toastMsg = document.getElementById('toastMsg');
+            toastMsg.textContent = msg;
+            toast.classList.remove('hidden');
+            setTimeout(() => toast.classList.add('hidden'), 2500);
+        }
+
+        // Category click
+        document.querySelectorAll('.category-pill').forEach(pill => {
+            pill.addEventListener('click', (e) => {
+                activeCategory = e.target.dataset.category || e.target.closest('[data-category]').dataset.category;
+
+                document.querySelectorAll('.category-pill').forEach(p => {
+                    p.classList.remove('active', 'from-purple-500', 'to-indigo-600', 'text-white', 'shadow-md');
+                    p.classList.add('bg-white', 'text-gray-700', 'shadow-sm', 'border', 'border-gray-200');
+                });
+                const activeBtn = e.target.classList.contains('category-pill') ? e.target : e.target.closest('.category-pill');
+                activeBtn.classList.add('active', 'from-purple-500', 'to-indigo-600', 'text-white', 'shadow-md');
+                activeBtn.classList.remove('bg-white', 'text-gray-700', 'shadow-sm', 'border', 'border-gray-200');
+
+                renderMenu();
+            });
+        });
+
+        // Search
+        let searchTimeout;
+        document.getElementById('searchInput').addEventListener('input', (e) => {
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(() => {
+                searchQuery = e.target.value.trim().toLowerCase();
+                renderMenu();
+            }, 300);
+        });
+
+        // Cart button
+        document.getElementById('cartBtn').addEventListener('click', () => {
+            if (cart.length === 0) {
+                showToast('⚠️ Giỏ hàng đang trống');
+            } else {
+                alert(`Giỏ hàng có ${cart.length} món.\n\n(Demo: Trang giỏ hàng sẽ hiển thị chi tiết)`);
+            }
+        });
+
+        // Init
+        updateCartBadge();
+        renderMenu();
+
+        // Table from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const table = urlParams.get('table');
+        if (table) localStorage.setItem('table', table);
+    </script>
+
+</body>
+</html>
