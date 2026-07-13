@@ -1,0 +1,22 @@
+{
+  "name": "Tiệm Cafe Góc Nhỏ",
+  "short_name": "Cafe Góc Nhỏ",
+  "description": "Đặt món online tại Tiệm Cafe Góc Nhỏ — không cần tải app, không cần đăng ký",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#92400E",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

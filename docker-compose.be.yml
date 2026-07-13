@@ -1,0 +1,121 @@
+version: '3.8'
+
+services:
+  api:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: cafegocnho-api
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+    environment:
+      - DATABASE_URL=postgresql+asyncpg://user:${DB_PASSWORD}@db:5432/cafegocnho
+      - REDIS_URL=redis://redis:6379/0
+      - MINIO_ENDPOINT=minio:9000
+      - MINIO_ACCESS_KEY=${MINIO_ACCESS_KEY:-minioadmin}
+      - MINIO_SECRET_KEY=${MINIO_SECRET_KEY:-minioadmin}
+      - JWT_SECRET=${JWT_SECRET:-dev-secret}
+      - VIETQR_BANK_BIN=${VIETQR_BANK_BIN:-970432}
+      - VIETQR_ACCOUNT_NO=${VIETQR_ACCOUNT_NO:-680180598}
+      - VIETQR_ACCOUNT_NAME=${VIETQR_ACCOUNT_NAME:-LUU VAN TU}
+      - CELERY_BROKER_URL=redis://redis:6379/1
+    ports:
+      - "8000:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_started
+      minio:
+        condition: service_started
+    networks:
+      - cafegocnho-net
+    restart: unless-stopped
+
+  worker:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: cafegocnho-worker
+    command: celery -A app.tasks.celery_app worker --loglevel=info
+    environment:
+      - DATABASE_URL=postgresql+asyncpg://user:${DB_PASSWORD}@db:5432/cafegocnho
+      - REDIS_URL=redis://redis:6379/0
+      - CELERY_BROKER_URL=redis://redis:6379/1
+      - CELERY_RESULT_BACKEND=redis://redis:6379/2
+    depends_on:
+      - db
+      - redis
+    networks:
+      - cafegocnho-net
+    restart: unless-stopped
+
+  beat:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: cafegocnho-beat
+    command: celery -A app.tasks.celery_app beat --loglevel=info
+    environment:
+      - DATABASE_URL=postgresql+asyncpg://user:${DB_PASSWORD}@db:5432/cafegocnho
+      - REDIS_URL=redis://redis:6379/0
+      - CELERY_BROKER_URL=redis://redis:6379/1
+      - CELERY_RESULT_BACKEND=redis://redis:6379/2
+    depends_on:
+      - db
+      - redis
+    networks:
+      - cafegocnho-net
+    restart: unless-stopped
+
+  db:
+    image: postgres:16-alpine
+    container_name: cafegocnho-db
+    environment:
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=${DB_PASSWORD:-changeme}
+      - POSTGRES_DB=cafegocnho
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U user -d cafegocnho"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - cafegocnho-net
+    restart: unless-stopped
+
+  redis:
+    image: redis:7-alpine
+    container_name: cafegocnho-redis
+    volumes:
+      - redisdata:/data
+    networks:
+      - cafegocnho-net
+    restart: unless-stopped
+
+  minio:
+    image: minio/minio:latest
+    container_name: cafegocnho-minio
+    command: server /data --console-address ":9001"
+    environment:
+      - MINIO_ROOT_USER=${MINIO_ACCESS_KEY:-minioadmin}
+      - MINIO_ROOT_PASSWORD=${MINIO_SECRET_KEY:-minioadmin}
+    volumes:
+      - miniodata:/data
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    networks:
+      - cafegocnho-net
+    restart: unless-stopped
+
+volumes:
+  pgdata:
+  redisdata:
+  miniodata:
+
+networks:
+  cafegocnho-net:
