@@ -44,8 +44,8 @@
 
 ### 🟢 MUST (bắt buộc có trong MVP)
 
-#### Feature 1: [MEN] ⏳ Todo — Xem menu và danh mục món
-**Story:** [MEN-01] ⏳ Todo — Là khách Ngọc lần đầu đến quán, tôi muốn xem menu có hình ảnh, giá tiền rõ ràng và phân loại theo nhóm (cafe, trà, sinh tố, bánh...), để dễ dàng chọn món mình thích mà không cần hỏi nhân viên.
+#### Feature 1: [MEN] ✅ Done — Xem menu và danh mục món
+**Story:** [MEN-01] ✅ Done — Là khách Ngọc lần đầu đến quán, tôi muốn xem menu có hình ảnh, giá tiền rõ ràng và phân loại theo nhóm (cafe, trà, sinh tố, bánh...), để dễ dàng chọn món mình thích mà không cần hỏi nhân viên.
 
 **Done khi:**
 - ✅ Menu hiển thị theo 7 danh mục: Cà phê, Trà, Sinh tố, Đá xay, Nước ép, Bánh ngọt, Ăn nhẹ
