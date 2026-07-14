@@ -5,7 +5,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 const MenuPage = lazy(() => import("@/pages/MenuPage"));
 const CartPage = lazy(() => import("@/pages/CartPage"));
 const CheckoutPage = lazy(() => import("@/pages/CheckoutPage"));
-const OrderConfirmed = lazy(() => import("@/pages/OrderConfirmed"));
+const OrderConfirmed = lazy(() => import("@/pages/OrderConfirmedPage"));
 const StaffLogin = lazy(() => import("@/pages/staff/StaffLogin"));
 const StaffDashboard = lazy(() => import("@/pages/staff/StaffDashboard"));
 const AdminLogin = lazy(() => import("@/pages/admin/AdminLogin"));

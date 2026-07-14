@@ -7,17 +7,31 @@ const api = axios.create({
   baseURL: API_BASE_URL,
   headers: { "Content-Type": "application/json" },
   timeout: 15000,
+  withCredentials: true,
 });
 
-// Request interceptor — auto attach admin JWT if available
+// Request interceptor — attach staff or admin JWT token
 api.interceptors.request.use((config) => {
-  const session = localStorage.getItem("admin-session");
-  if (session) {
+  // Staff token takes priority (staff pages)
+  const staffSession = localStorage.getItem("staff-session");
+  if (staffSession) {
     try {
-      const { token } = JSON.parse(session);
-      if (token) {
+      const { token, expiresAt } = JSON.parse(staffSession);
+      if (token && expiresAt > Date.now()) {
         config.headers.Authorization = `Bearer ${token}`;
+        return config;
       }
+    } catch {
+      /* ignore */
+    }
+  }
+
+  // Fall back to admin JWT
+  const adminSession = localStorage.getItem("admin-session");
+  if (adminSession) {
+    try {
+      const { token } = JSON.parse(adminSession);
+      if (token) config.headers.Authorization = `Bearer ${token}`;
     } catch {
       /* ignore */
     }
@@ -25,14 +39,16 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
-// Response interceptor — handle 401
+// Response interceptor — handle 401 (do NOT auto-clear valid sessions)
 api.interceptors.response.use(
   (response) => response,
   (error) => {
+    // Only clear admin session on 401 from admin endpoints
     if (error.response?.status === 401) {
-      // Clear expired sessions
-      localStorage.removeItem("admin-session");
-      localStorage.removeItem("staff-session");
+      const url: string = error.config?.url ?? "";
+      if (url.includes("/admin/")) {
+        localStorage.removeItem("admin-session");
+      }
     }
     return Promise.reject(error);
   }

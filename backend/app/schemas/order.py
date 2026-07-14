@@ -7,7 +7,7 @@ from pydantic import BaseModel, Field
 
 
 class OrderItemOptionIn(BaseModel):
-    option_id: UUID
+    option_id: str
 
 
 class OrderItemToppingIn(BaseModel):
@@ -31,6 +31,20 @@ class OrderCreate(BaseModel):
     note: str | None = Field(None, max_length=200)
 
 
+class OrderItemOptionOut(BaseModel):
+    option_id: UUID
+    
+    model_config = {"from_attributes": True}
+
+
+class OrderItemToppingOut(BaseModel):
+    topping_id: UUID
+    quantity: int
+    price: int
+    
+    model_config = {"from_attributes": True}
+
+
 class OrderItemOut(BaseModel):
     id: UUID
     product_id: UUID
@@ -41,8 +55,8 @@ class OrderItemOut(BaseModel):
     unit_price: int
     note: str | None
     status: str
-    options: list[dict] = []
-    toppings: list[dict] = []
+    options: list[OrderItemOptionOut] = []
+    toppings: list[OrderItemToppingOut] = []
 
     model_config = {"from_attributes": True}
 
@@ -60,6 +74,8 @@ class OrderOut(BaseModel):
     confirmed_at: datetime | None = None
     completed_at: datetime | None = None
     items: list[OrderItemOut] = []
+    qr_code_data: str | None = None
+    bank_info: dict | None = None
 
     model_config = {"from_attributes": True}
 

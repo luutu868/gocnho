@@ -19,6 +19,17 @@ interface CartState {
     toppings: CartItemTopping[],
     note?: string
   ) => void;
+  updateItem: (
+    id: string,
+    updates: Partial<{
+      variantId: string;
+      variantSize: string;
+      basePrice: number;
+      options: CartItemOption[];
+      toppings: CartItemTopping[];
+      note: string;
+    }>
+  ) => void;
   updateQuantity: (id: string, delta: number) => void;
   removeItem: (id: string) => void;
   clearCart: () => void;
@@ -59,6 +70,18 @@ export const useCartStore = create<CartState>()(
         };
 
         set((state) => ({ items: [...state.items, item] }));
+      },
+
+      updateItem: (id, updates) => {
+        set((state) => ({
+          items: state.items.map((item) => {
+            if (item.id !== id) return item;
+            const updated = { ...item, ...updates };
+            const toppingTotal = updated.toppings.reduce((sum, t) => sum + t.price * t.quantity, 0);
+            updated.totalPrice = updated.basePrice + toppingTotal;
+            return updated;
+          }),
+        }));
       },
 
       updateQuantity: (id, delta) => {

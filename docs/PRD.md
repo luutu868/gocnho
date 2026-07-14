@@ -108,8 +108,8 @@
 
 ---
 
-#### Feature 2: [TCH] ⏳ Todo — Tùy chỉnh món (size, đường, đá, topping)
-**Story:** [TCH-01] ⏳ Todo — Là khách Ngọc, tôi muốn chọn size S/M/L, mức đường (0% - 30% - 50% - 70% - 100%), mức đá (không đá - ít đá - bình thường) và thêm topping nếu có, để món nước ra đúng gu của tôi, không bị ngọt quá hay nhạt quá.
+#### Feature 2: [TCH] ✅ Done — Tùy chỉnh món (size, đường, đá, topping)
+**Story:** [TCH-01] ✅ Done — Là khách Ngọc, tôi muốn chọn size S/M/L, mức đường (0% - 30% - 50% - 70% - 100%), mức đá (không đá - ít đá - bình thường) và thêm topping nếu có, để món nước ra đúng gu của tôi, không bị ngọt quá hay nhạt quá.
 
 **Done khi:**
 - ✅ Mỗi món nước có tùy chọn: Size (S/M/L, mỗi size có giá khác nhau)
@@ -123,8 +123,8 @@
 
 ---
 
-#### Feature 3: [GIH] ⏳ Todo — Giỏ hàng & đặt món
-**Story:** [GIH-01] ⏳ Todo — Là khách Ngọc đi cùng nhóm 3 người, tôi muốn thêm nhiều món vào giỏ, xem lại danh sách đã chọn, sửa/xóa từng món, và thấy tổng tiền rõ ràng trước khi đặt, để kiểm soát chi tiêu và tránh đặt nhầm.
+#### Feature 3: [GIH] ✅ Done — Giỏ hàng & đặt món
+**Story:** [GIH-01] ✅ Done — Là khách Ngọc đi cùng nhóm 3 người, tôi muốn thêm nhiều món vào giỏ, xem lại danh sách đã chọn, sửa/xóa từng món, và thấy tổng tiền rõ ràng trước khi đặt, để kiểm soát chi tiêu và tránh đặt nhầm.
 
 **Done khi:**
 - ✅ Nút "Thêm vào giỏ" ở mỗi món sau khi chọn xong tùy chỉnh
@@ -139,8 +139,8 @@
 
 ---
 
-#### Feature 4: [THA] ⏳ Todo — Thanh toán qua VietQR
-**Story:** [THA-01] ⏳ Todo — Là khách Ngọc, tôi muốn thanh toán nhanh bằng cách quét mã VietQR qua app ngân hàng trên điện thoại (không cần tiền mặt, không cần thẻ), để tiết kiệm thời gian và không phải chờ nhân viên tính tiền.
+#### Feature 4: [THA] ✅ Done — Thanh toán qua VietQR
+**Story:** [THA-01] ✅ Done — Là khách Ngọc, tôi muốn thanh toán nhanh bằng cách quét mã VietQR qua app ngân hàng trên điện thoại (không cần tiền mặt, không cần thẻ), để tiết kiệm thời gian và không phải chờ nhân viên tính tiền.
 
 **Done khi:**
 - ✅ Trang checkout hiển thị thông tin đơn hàng đã tạo (mã đơn, danh sách món, tổng tiền)
@@ -156,8 +156,8 @@
 
 ---
 
-#### Feature 5: [NVI] ⏳ Todo — Dashboard nhân viên (nhận & xử lý order)
-**Story:** [NVI-01] ⏳ Todo — Là nhân viên Tú, tôi muốn thấy order mới hiện lên màn hình ngay lập tức, biết order đó của bàn nào, gồm những món gì với tùy chỉnh ra sao, và bấm "Đã làm xong" khi pha chế xong từng món, để không bỏ sót order và làm đúng yêu cầu khách.
+#### Feature 5: [NVI] ✅ Done — Dashboard nhân viên (nhận & xử lý order)
+**Story:** [NVI-01] ✅ Done — Là nhân viên Tú, tôi muốn thấy order mới hiện lên màn hình ngay lập tức, biết order đó của bàn nào, gồm những món gì với tùy chỉnh ra sao, và bấm "Đã làm xong" khi pha chế xong từng món, để không bỏ sót order và làm đúng yêu cầu khách.
 
 **Done khi:**
 - ✅ Màn hình dashboard cho nhân viên (URL riêng: `/staff`)

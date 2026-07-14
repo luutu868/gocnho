@@ -41,3 +41,4 @@ class Order(Base):
 
     # Relationships
     items = relationship("OrderItem", back_populates="order")
+    table = relationship("Table")

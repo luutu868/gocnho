@@ -22,10 +22,35 @@ interface StaffState {
   updateItemStatus: (itemId: string, status: string) => Promise<void>;
 }
 
+const getInitialState = () => {
+  const saved = localStorage.getItem("staff-session");
+  if (saved) {
+    try {
+      const parsed = JSON.parse(saved);
+      if (parsed.expiresAt > Date.now()) {
+        return {
+          isAuthenticated: true,
+          staffCode: parsed.staffCode || "",
+          staffName: parsed.staffName || "",
+        };
+      }
+    } catch {
+      localStorage.removeItem("staff-session");
+    }
+  }
+  return {
+    isAuthenticated: false,
+    staffCode: "",
+    staffName: "",
+  };
+};
+
+const initialState = getInitialState();
+
 export const useStaffStore = create<StaffState>((set, get) => ({
-  isAuthenticated: false,
-  staffCode: "",
-  staffName: "",
+  isAuthenticated: initialState.isAuthenticated,
+  staffCode: initialState.staffCode,
+  staffName: initialState.staffName,
   orders: [],
   lastPollTime: null,
   isLoading: false,
@@ -36,6 +61,13 @@ export const useStaffStore = create<StaffState>((set, get) => ({
   login: async (staffCode, pin) => {
     try {
       const result = await staffApi.staffLogin(staffCode, pin);
+      const session = {
+        staffCode: result.staff_code,
+        staffName: result.name,
+        token: result.session_token,           // ← save token for Bearer auth
+        expiresAt: Date.now() + 8 * 60 * 60 * 1000,
+      };
+      localStorage.setItem("staff-session", JSON.stringify(session));
       set({
         isAuthenticated: true,
         staffCode: result.staff_code,
@@ -68,6 +100,7 @@ export const useStaffStore = create<StaffState>((set, get) => ({
     } catch {
       /* ignore */
     }
+    localStorage.removeItem("staff-session");
     set({
       isAuthenticated: false,
       staffCode: "",

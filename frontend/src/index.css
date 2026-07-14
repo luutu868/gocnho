@@ -7,7 +7,7 @@
     --color-amber-50: #fffbeb;
   }
 
-  /* Minimum touch target 44x44px */
+  /* Minimum touch target 44x44px — WCAG AA */
   button,
   a,
   input,
@@ -19,8 +19,9 @@
 }
 
 @layer utilities {
+  /* Fade in — general purpose */
   .animate-fadeIn {
-    animation: fadeIn 0.3s ease-in-out;
+    animation: fadeIn 0.25s ease-out both;
   }
 
   @keyframes fadeIn {
@@ -34,6 +35,21 @@
     }
   }
 
+  /* Slide up from bottom — mobile bottom sheet */
+  .animate-slideUp {
+    animation: slideUp 0.3s cubic-bezier(0.32, 0.72, 0, 1) both;
+  }
+
+  @keyframes slideUp {
+    from {
+      transform: translateY(100%);
+    }
+    to {
+      transform: translateY(0);
+    }
+  }
+
+  /* Hide scrollbar (cross-browser) */
   .scrollbar-hide {
     -ms-overflow-style: none;
     scrollbar-width: none;
@@ -42,3 +58,4 @@
     display: none;
   }
 }
+

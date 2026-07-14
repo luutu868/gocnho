@@ -29,6 +29,8 @@ class OrderItem(Base):
 
     # Relationships
     order = relationship("Order", back_populates="items")
+    product = relationship("Product")
+    variant = relationship("ProductVariant")
     options = relationship("OrderItemOption", back_populates="order_item")
     toppings = relationship("OrderItemTopping", back_populates="order_item")
 
@@ -47,6 +49,7 @@ class OrderItemOption(Base):
     )
 
     order_item = relationship("OrderItem", back_populates="options")
+    option = relationship("Option")
 
 
 class OrderItemTopping(Base):
@@ -65,3 +68,4 @@ class OrderItemTopping(Base):
     price: Mapped[int] = mapped_column(Integer, nullable=False)  # VND — snapshot
 
     order_item = relationship("OrderItem", back_populates="toppings")
+    topping = relationship("Topping")

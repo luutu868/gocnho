@@ -1,16 +1,27 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useStaffStore } from "@/stores/useStaffStore";
 
 export default function StaffLogin() {
   const navigate = useNavigate();
-  const { login, error, lockedUntil } = useStaffStore();
+  const { login, error, lockedUntil, isAuthenticated } = useStaffStore();
   const [staffCode, setStaffCode] = useState("");
   const [pin, setPin] = useState("");
+  const [isLoggingIn, setIsLoggingIn] = useState(false);
+
+  // Already logged in → go straight to dashboard
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate("/staff/dashboard", { replace: true });
+    }
+  }, [isAuthenticated, navigate]);
 
   const handleLogin = async () => {
+    if (isLoggingIn) return;
+    setIsLoggingIn(true);
     const ok = await login(staffCode, pin);
-    if (ok) navigate("/staff/dashboard");
+    setIsLoggingIn(false);
+    if (ok) navigate("/staff/dashboard", { replace: true });
   };
 
   return (
@@ -60,10 +71,10 @@ export default function StaffLogin() {
 
           <button
             onClick={handleLogin}
-            disabled={Date.now() < lockedUntil}
+            disabled={Date.now() < lockedUntil || isLoggingIn}
             className="w-full py-3 bg-amber-600 hover:bg-amber-700 disabled:bg-gray-300 text-white font-semibold rounded-xl transition-colors shadow-md"
           >
-            Đăng nhập
+            {isLoggingIn ? "Đang đăng nhập..." : "Đăng nhập"}
           </button>
         </div>
 

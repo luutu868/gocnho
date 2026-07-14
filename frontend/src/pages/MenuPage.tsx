@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { useCartStore } from "@/stores/useCartStore";
 import { useMenuStore } from "@/stores/useMenuStore";
@@ -7,12 +7,39 @@ import { OfflineBanner } from "@/components/shared/OfflineBanner";
 import { ProductCard } from "@/components/menu/ProductCard";
 import { CategoryTabs } from "@/components/menu/CategoryTabs";
 import { SearchBar } from "@/components/menu/SearchBar";
+import { CustomizeModal } from "@/components/menu/CustomizeModal";
+import type { Product } from "@/types/menu";
 
 export default function MenuPage() {
   const [searchParams] = useSearchParams();
   const { itemCount, tableCode, setTableCode } = useCartStore();
-  const { categories, selectedCategory, searchQuery, isLoading, error, fetchMenu, setCategory, setSearch, filteredProducts } = useMenuStore();
+  const {
+    categories,
+    selectedCategory,
+    searchQuery,
+    isLoading,
+    error,
+    fetchMenu,
+    setCategory,
+    setSearch,
+    filteredProducts,
+  } = useMenuStore();
   const isOnline = useOnlineStatus();
+
+  // ── CustomizeModal state ──
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const openModal = (product: Product) => {
+    setSelectedProduct(product);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    // Delay clearing product để modal animate ra trước
+    setTimeout(() => setSelectedProduct(null), 200);
+  };
 
   // Read table from URL param on mount
   useEffect(() => {
@@ -36,7 +63,7 @@ export default function MenuPage() {
       {!isOnline && <OfflineBanner />}
 
       {/* ── Header ── */}
-      <header className="sticky top-0 z-50 bg-white shadow-sm" role="banner">
+      <header className="sticky top-0 z-40 bg-white shadow-sm" role="banner">
         <div className="flex items-center justify-between px-4 py-3 max-w-7xl mx-auto">
           <div className="flex items-center gap-2">
             {/* Logo SVG — ly cà phê nhỏ */}
@@ -46,7 +73,9 @@ export default function MenuPage() {
               <path d="M14 26C14 25.4477 14.4477 25 15 25H17C17.5523 25 18 25.4477 18 26V27H14V26Z" fill="#92400E" />
             </svg>
             <div>
-              <h1 className="text-lg font-semibold text-gray-900 leading-tight">Tiệm Cafe Góc Nhỏ</h1>
+              <h1 className="text-lg font-semibold text-gray-900 leading-tight">
+                Tiệm Cafe Góc Nhỏ
+              </h1>
               {tableCode && (
                 <span className="text-xs text-amber-700 font-medium bg-amber-50 px-2 py-0.5 rounded-full">
                   Bàn {tableCode}
@@ -59,11 +88,25 @@ export default function MenuPage() {
             className="relative min-w-[44px] min-h-[44px] flex items-center justify-center p-2 hover:bg-amber-50 rounded-full transition-colors"
             aria-label="Giỏ hàng"
           >
-            <svg className="w-7 h-7 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+            <svg
+              className="w-7 h-7 text-gray-700"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"
+              />
             </svg>
             {itemCount() > 0 && (
-              <span className="absolute top-0 right-0 bg-red-500 text-white text-xs font-bold px-1.5 py-0.5 rounded-full min-w-[20px] text-center" aria-live="polite">
+              <span
+                className="absolute top-0 right-0 bg-red-500 text-white text-xs font-bold px-1.5 py-0.5 rounded-full min-w-[20px] text-center"
+                aria-live="polite"
+              >
                 {itemCount()}
               </span>
             )}
@@ -117,10 +160,7 @@ export default function MenuPage() {
               <ProductCard
                 key={product.id}
                 product={product}
-                onAddClick={() => {
-                  // TODO: Mở CustomizeModal trong TCH-01
-                  // For now — add directly with default variant
-                }}
+                onAddClick={(p) => openModal(p)}
               />
             ))}
           </div>
@@ -140,6 +180,13 @@ export default function MenuPage() {
           <span>{itemCount()} món</span>
         </Link>
       )}
+
+      {/* ── Customize Modal ── */}
+      <CustomizeModal
+        product={selectedProduct}
+        isOpen={isModalOpen}
+        onClose={closeModal}
+      />
     </div>
   );
 }

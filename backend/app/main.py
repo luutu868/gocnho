@@ -15,12 +15,14 @@ from app.routers import admin_toppings, admin_tables, admin_staff
 from app.routers import admin_orders, admin_settings, admin_upload
 
 
+from app.redis_client import init_redis, close_redis
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     """Startup / shutdown events."""
-    # Startup: nothing needed yet
+    await init_redis()
     yield
-    # Shutdown: nothing needed yet
+    await close_redis()
 
 
 app = FastAPI(
