@@ -24,6 +24,9 @@ export default function StaffLogin() {
     if (ok) navigate("/staff/dashboard", { replace: true });
   };
 
+  // Tránh việc nhấp nháy giao diện form login trước khi redirect
+  if (isAuthenticated) return null;
+
   return (
     <div className="min-h-screen flex items-center justify-center px-4 bg-gray-50">
       <div className="w-full max-w-sm">
@@ -44,7 +47,7 @@ export default function StaffLogin() {
               type="text"
               value={staffCode}
               onChange={(e) => setStaffCode(e.target.value.toUpperCase())}
-              placeholder="VD: NV001"
+              placeholder="VD: NV01"
               className="w-full px-3 py-3 border border-gray-300 rounded-lg text-base focus:ring-2 focus:ring-amber-600 focus:border-transparent"
               autoFocus
               onKeyDown={(e) => { if (e.key === "Enter") handleLogin(); }}

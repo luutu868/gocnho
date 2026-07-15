@@ -41,13 +41,13 @@ export default function MenuPage() {
     setTimeout(() => setSelectedProduct(null), 200);
   };
 
-  // Read table from URL param on mount
+  // Read table from URL param — URL param ALWAYS overrides localStorage
   useEffect(() => {
     const tableFromUrl = searchParams.get("table");
-    if (tableFromUrl && !tableCode) {
-      setTableCode(tableFromUrl);
+    if (tableFromUrl) {
+      setTableCode(tableFromUrl);   // override regardless of existing value
     }
-  }, [searchParams, tableCode, setTableCode]);
+  }, [searchParams, setTableCode]);
 
   // Fetch menu on mount
   useEffect(() => {

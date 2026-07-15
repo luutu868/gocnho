@@ -1,16 +1,31 @@
-import { useState, useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuthStore } from "@/stores/useAuthStore";
 
 export default function AdminLogin() {
   const navigate = useNavigate();
-  const { login, error, isAuthenticated } = useAuthStore();
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const { login, error, isAuthenticated, mustChangePassword } = useAuthStore();
+
+  // Use uncontrolled refs so browser automation (key events) work correctly
+  const usernameRef = useRef<HTMLInputElement>(null);
+  const passwordRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    if (isAuthenticated) navigate("/admin/dashboard");
-  }, [isAuthenticated, navigate]);
+    if (isAuthenticated) {
+      navigate(mustChangePassword ? "/admin/change-password" : "/admin/dashboard", {
+        replace: true,
+      });
+    }
+  }, [isAuthenticated, mustChangePassword, navigate]);
+
+  const handleLogin = () => {
+    const username = usernameRef.current?.value ?? "";
+    const password = passwordRef.current?.value ?? "";
+    login(username, password);
+  };
+
+  // Tránh việc nhấp nháy giao diện form login trước khi redirect
+  if (isAuthenticated) return null;
 
   return (
     <div className="min-h-screen flex items-center justify-center px-4 bg-gray-50">
@@ -29,33 +44,38 @@ export default function AdminLogin() {
           <div>
             <label className="block text-sm font-semibold text-gray-900 mb-1">Tên đăng nhập</label>
             <input
+              id="admin-username"
               type="text"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
+              ref={usernameRef}
+              defaultValue=""
               placeholder="admin"
               className="w-full px-3 py-3 border border-gray-300 rounded-lg text-base focus:ring-2 focus:ring-amber-600 focus:border-transparent"
               autoFocus
-              onKeyDown={(e) => { if (e.key === "Enter") login(username, password); }}
+              onKeyDown={(e) => { if (e.key === "Enter") handleLogin(); }}
             />
           </div>
           <div>
             <label className="block text-sm font-semibold text-gray-900 mb-1">Mật khẩu</label>
             <input
+              id="admin-password"
               type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              ref={passwordRef}
+              defaultValue=""
               placeholder="••••••••"
               className="w-full px-3 py-3 border border-gray-300 rounded-lg text-base focus:ring-2 focus:ring-amber-600 focus:border-transparent"
-              onKeyDown={(e) => { if (e.key === "Enter") login(username, password); }}
+              onKeyDown={(e) => { if (e.key === "Enter") handleLogin(); }}
             />
           </div>
 
           {error && (
-            <div className="p-3 bg-red-50 border border-red-200 rounded-lg text-sm text-red-700" role="alert">{error}</div>
+            <div className="p-3 bg-red-50 border border-red-200 rounded-lg text-sm text-red-700" role="alert">
+              {error}
+            </div>
           )}
 
           <button
-            onClick={() => login(username, password)}
+            id="admin-login-btn"
+            onClick={handleLogin}
             className="w-full py-3 bg-amber-600 hover:bg-amber-700 text-white font-semibold rounded-xl transition-colors shadow-md"
           >
             Đăng nhập

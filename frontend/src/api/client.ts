@@ -26,12 +26,12 @@ api.interceptors.request.use((config) => {
     }
   }
 
-  // Fall back to admin JWT
-  const adminSession = localStorage.getItem("admin-session");
-  if (adminSession) {
+  // Fall back to admin JWT (from Zustand persisted store key "admin-auth")
+  const adminAuth = localStorage.getItem("admin-auth");
+  if (adminAuth) {
     try {
-      const { token } = JSON.parse(adminSession);
-      if (token) config.headers.Authorization = `Bearer ${token}`;
+      const { state } = JSON.parse(adminAuth);
+      if (state?.token) config.headers.Authorization = `Bearer ${state.token}`;
     } catch {
       /* ignore */
     }
@@ -39,15 +39,16 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
-// Response interceptor — handle 401 (do NOT auto-clear valid sessions)
+// Response interceptor — handle 401
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    // Only clear admin session on 401 from admin endpoints
     if (error.response?.status === 401) {
       const url: string = error.config?.url ?? "";
-      if (url.includes("/admin/")) {
-        localStorage.removeItem("admin-session");
+      // Only clear admin session on 401 from admin DATA endpoints (not auth endpoints)
+      // Pattern: /api/v1/admin/ but NOT /api/v1/auth/admin/
+      if (url.includes("/api/v1/admin/") && !url.includes("/auth/")) {
+        localStorage.removeItem("admin-auth");
       }
     }
     return Promise.reject(error);

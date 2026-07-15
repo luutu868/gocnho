@@ -102,6 +102,17 @@ class TableBatchCreate(BaseModel):
     padding: int = 2  # "01" → B01
 
 
+class TableOut(BaseModel):
+    id: UUID
+    code: str
+    qr_url: str | None
+    is_active: bool
+    created_at: datetime
+    updated_at: datetime
+
+    model_config = {"from_attributes": True}
+
+
 # Setting
 class SettingUpdate(BaseModel):
     shop_name: str | None = Field(None, min_length=2, max_length=100)

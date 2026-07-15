@@ -185,8 +185,8 @@
 
 ### 🔵 SHOULD (nên có, không gấp)
 
-#### Feature 6: [BAN] ⏳ Todo — Chọn bàn qua QR
-**Story:** [BAN-01] ⏳ Todo — Là khách Ngọc, tôi muốn quét mã QR dán trên bàn là vào thẳng menu của quán, và hệ thống tự nhận biết tôi đang ngồi bàn số mấy, để nhân viên biết mang nước ra đúng bàn mà tôi không cần nhập thủ công.
+#### Feature 6: [BAN] ✅ Done — Chọn bàn qua QR
+**Story:** [BAN-01] ✅ Done — Là khách Ngọc, tôi muốn quét mã QR dán trên bàn là vào thẳng menu của quán, và hệ thống tự nhận biết tôi đang ngồi bàn số mấy, để nhân viên biết mang nước ra đúng bàn mà tôi không cần nhập thủ công.
 
 **Done khi:**
 - ✅ Mỗi bàn có 1 mã QR riêng chứa URL dạng `.../?table=XX`
@@ -201,8 +201,8 @@
 
 ---
 
-#### Feature 7: [QLY] ⏳ Todo — Trang quản lý menu cho chủ quán
-**Story:** [QLY-01] ⏳ Todo — Là chị Hương (chủ quán), tôi muốn tự thêm/sửa/xóa món trên menu, cập nhật giá, up ảnh mới, và ẩn món hết hàng, để menu luôn chính xác mà không cần gọi developer.
+#### Feature 7: [QLY] ✅ Done — Trang quản lý menu cho chủ quán
+**Story:** [QLY-01] ✅ Done — Là chị Hương (chủ quán), tôi muốn tự thêm/sửa/xóa món trên menu, cập nhật giá, up ảnh mới, và ẩn món hết hàng, để menu luôn chính xác mà không cần gọi developer.
 
 **Done khi:**
 - ✅ Trang admin: đăng nhập bằng username/password (bảng riêng `admins`, không dùng chung với bảng `staff` của nhân viên)
