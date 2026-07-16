@@ -27,6 +27,8 @@ services:
         condition: service_started
       minio:
         condition: service_started
+    volumes:
+      - ./backend:/app
     networks:
       - cafegocnho-net
     restart: unless-stopped

@@ -57,3 +57,6 @@ yarn-error.log*
 
 # OS
 Thumbs.db
+
+# Uploads
+backend/static/uploads/

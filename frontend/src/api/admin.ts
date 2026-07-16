@@ -69,7 +69,9 @@ export async function deleteProduct(id: string) {
 export async function uploadProductImage(productId: string, file: File) {
   const formData = new FormData();
   formData.append("file", file);
-  const { data } = await api.post(`/admin/upload/product-image/${productId}`, formData);
+  const { data } = await api.post(`/admin/upload/product-image/${productId}`, formData, {
+    headers: { "Content-Type": undefined },
+  });
   return data as { id: string; url: string; product_id: string };
 }
 

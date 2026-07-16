@@ -81,10 +81,9 @@ async def upload_product_image(
     )
     db.add(image)
 
-    # Set as primary if no primary image
-    if not product.primary_image_id:
-        await db.flush()
-        product.primary_image_id = image.id
+    # Always set uploaded image as the primary image of the product
+    await db.flush()
+    product.primary_image_id = image.id
 
     await db.commit()
     await db.refresh(image)
