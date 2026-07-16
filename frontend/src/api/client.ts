@@ -10,32 +10,36 @@ const api = axios.create({
   withCredentials: true,
 });
 
-// Request interceptor — attach staff or admin JWT token
 api.interceptors.request.use((config) => {
-  // Staff token takes priority (staff pages)
-  const staffSession = localStorage.getItem("staff-session");
-  if (staffSession) {
-    try {
-      const { token, expiresAt } = JSON.parse(staffSession);
-      if (token && expiresAt > Date.now()) {
-        config.headers.Authorization = `Bearer ${token}`;
-        return config;
+  const url = config.url || "";
+
+  // If requesting an admin endpoint, use admin token
+  if (url.includes("/admin/")) {
+    const adminAuth = localStorage.getItem("admin-auth");
+    if (adminAuth) {
+      try {
+        const { state } = JSON.parse(adminAuth);
+        if (state?.token) config.headers.Authorization = `Bearer ${state.token}`;
+      } catch {
+        /* ignore */
       }
-    } catch {
-      /* ignore */
+    }
+  } 
+  // If requesting a staff endpoint, use staff token
+  else if (url.includes("/staff/")) {
+    const staffSession = localStorage.getItem("staff-session");
+    if (staffSession) {
+      try {
+        const { token, expiresAt } = JSON.parse(staffSession);
+        if (token && expiresAt > Date.now()) {
+          config.headers.Authorization = `Bearer ${token}`;
+        }
+      } catch {
+        /* ignore */
+      }
     }
   }
 
-  // Fall back to admin JWT (from Zustand persisted store key "admin-auth")
-  const adminAuth = localStorage.getItem("admin-auth");
-  if (adminAuth) {
-    try {
-      const { state } = JSON.parse(adminAuth);
-      if (state?.token) config.headers.Authorization = `Bearer ${state.token}`;
-    } catch {
-      /* ignore */
-    }
-  }
   return config;
 });
 
