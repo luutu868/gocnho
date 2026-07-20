@@ -5,7 +5,6 @@ import { persist } from "zustand/middleware";
 import * as adminApi from "@/api/admin";
 
 interface AuthState {
-  token: string | null;
   username: string | null;
   isAuthenticated: boolean;
   mustChangePassword: boolean;
@@ -20,7 +19,6 @@ interface AuthState {
 export const useAuthStore = create<AuthState>()(
   persist(
     (set, get) => ({
-      token: null,
       username: null,
       isAuthenticated: false,
       mustChangePassword: false,
@@ -31,7 +29,6 @@ export const useAuthStore = create<AuthState>()(
         try {
           const result = await adminApi.adminLogin(username, password);
           set({
-            token: result.access_token,
             username,
             isAuthenticated: true,         // always true after successful login
             mustChangePassword: result.must_change_password || false,
@@ -49,9 +46,13 @@ export const useAuthStore = create<AuthState>()(
         }
       },
 
-      logout: () => {
+      logout: async () => {
+        try {
+          await adminApi.adminLogout();
+        } catch (e) {
+          /* ignore */
+        }
         set({
-          token: null,
           username: null,
           isAuthenticated: false,
           mustChangePassword: false,
@@ -84,7 +85,6 @@ export const useAuthStore = create<AuthState>()(
     {
       name: "admin-auth",          // localStorage key
       partialize: (state) => ({    // only persist these fields
-        token: state.token,
         username: state.username,
         isAuthenticated: state.isAuthenticated,
         mustChangePassword: state.mustChangePassword,

@@ -5,7 +5,12 @@ import api from "./client";
 // Auth
 export async function adminLogin(username: string, password: string) {
   const { data } = await api.post("/auth/admin/login", { username, password });
-  return data as { access_token: string; token_type: string; expires_in: number; must_change_password: boolean };
+  return data as { message: string; must_change_password: boolean };
+}
+
+export async function adminLogout() {
+  const { data } = await api.post("/auth/admin/logout");
+  return data;
 }
 
 export async function changePassword(oldPassword: string, newPassword: string) {

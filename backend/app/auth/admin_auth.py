@@ -3,12 +3,8 @@
 from datetime import datetime, timedelta, timezone
 
 import jwt
-from fastapi import Depends, HTTPException, status
-from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
-
+from fastapi import Depends, HTTPException, Request
 from app.config import settings
-
-security = HTTPBearer()
 
 
 def create_access_token(admin_id: str, username: str) -> str:
@@ -37,8 +33,9 @@ def verify_access_token(token: str) -> dict:
         raise HTTPException(status_code=401, detail="Invalid token")
 
 
-async def get_current_admin(
-    credentials: HTTPAuthorizationCredentials = Depends(security),
-) -> dict:
-    """FastAPI dependency — extract admin from JWT Bearer token."""
-    return verify_access_token(credentials.credentials)
+async def get_current_admin(request: Request) -> dict:
+    """FastAPI dependency — extract admin from JWT HttpOnly Cookie."""
+    token = request.cookies.get("admin_access_token")
+    if not token:
+        raise HTTPException(status_code=401, detail="Not authenticated")
+    return verify_access_token(token)

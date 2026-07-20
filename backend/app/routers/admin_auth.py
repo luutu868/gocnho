@@ -5,7 +5,7 @@ import secrets
 import bcrypt
 import jwt
 from datetime import datetime, timedelta, timezone
-from fastapi import APIRouter, Depends, HTTPException, Header
+from fastapi import APIRouter, Depends, HTTPException, Request, Response
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select, update
 from app.database import get_db
@@ -29,10 +29,10 @@ def create_token(admin_id: str, username: str) -> str:
     return jwt.encode(payload, JWT_SECRET, algorithm=JWT_ALGORITHM)
 
 
-async def get_current_admin(authorization: str = Header(None), db: AsyncSession = Depends(get_db)) -> Admin:
-    if not authorization or not authorization.startswith("Bearer "):
+async def get_current_admin(request: Request, db: AsyncSession = Depends(get_db)) -> Admin:
+    token = request.cookies.get("admin_access_token")
+    if not token:
         raise HTTPException(status_code=401, detail="Not authenticated")
-    token = authorization[7:]
     try:
         payload = jwt.decode(token, JWT_SECRET, algorithms=[JWT_ALGORITHM])
         admin_id = payload.get("sub")
@@ -49,7 +49,7 @@ async def get_current_admin(authorization: str = Header(None), db: AsyncSession 
 
 
 @router.post("/login", response_model=AdminLoginOut)
-async def admin_login(data: AdminLoginIn, db: AsyncSession = Depends(get_db)):
+async def admin_login(data: AdminLoginIn, response: Response, db: AsyncSession = Depends(get_db)):
     """Đăng nhập username/password → JWT token."""
     result = await db.execute(select(Admin).where(Admin.username == data.username))
     admin = result.scalar_one_or_none()
@@ -68,12 +68,24 @@ async def admin_login(data: AdminLoginIn, db: AsyncSession = Depends(get_db)):
     token = create_token(str(admin.id), admin.username)
     must_change = admin.password_changed_at is None
 
+    response.set_cookie(
+        key="admin_access_token",
+        value=token,
+        httponly=True,
+        samesite="lax",
+        max_age=JWT_EXPIRY_HOURS * 3600,
+    )
+
     return AdminLoginOut(
-        access_token=token,
-        token_type="bearer",
-        expires_in=JWT_EXPIRY_HOURS * 3600,
         must_change_password=must_change,
     )
+
+
+@router.post("/logout")
+async def admin_logout(response: Response):
+    """Đăng xuất admin, xóa cookie."""
+    response.delete_cookie(key="admin_access_token")
+    return {"message": "Đã đăng xuất"}
 
 
 @router.post("/change-password")

@@ -13,20 +13,8 @@ const api = axios.create({
 api.interceptors.request.use((config) => {
   const url = config.url || "";
 
-  // If requesting an admin endpoint, use admin token
-  if (url.includes("/admin/")) {
-    const adminAuth = localStorage.getItem("admin-auth");
-    if (adminAuth) {
-      try {
-        const { state } = JSON.parse(adminAuth);
-        if (state?.token) config.headers.Authorization = `Bearer ${state.token}`;
-      } catch {
-        /* ignore */
-      }
-    }
-  } 
   // If requesting a staff endpoint, use staff token
-  else if (url.includes("/staff/")) {
+  if (url.includes("/staff/")) {
     const staffSession = localStorage.getItem("staff-session");
     if (staffSession) {
       try {

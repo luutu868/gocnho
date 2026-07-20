@@ -12,9 +12,7 @@ class AdminLoginIn(BaseModel):
 
 
 class AdminLoginOut(BaseModel):
-    access_token: str
-    token_type: str = "bearer"
-    expires_in: int
+    message: str = "Đăng nhập thành công"
     must_change_password: bool = False
 
 
