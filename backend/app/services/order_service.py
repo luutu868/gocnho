@@ -150,6 +150,7 @@ class OrderService:
         res = await self.db.execute(
             select(Order)
             .options(
+                selectinload(Order.table),
                 selectinload(Order.items).selectinload(OrderItem.options),
                 selectinload(Order.items).selectinload(OrderItem.toppings)
             )

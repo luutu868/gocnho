@@ -42,3 +42,7 @@ class Order(Base):
     # Relationships
     items = relationship("OrderItem", back_populates="order")
     table = relationship("Table")
+
+    @property
+    def table_code(self) -> str | None:
+        return self.table.code if self.table else None

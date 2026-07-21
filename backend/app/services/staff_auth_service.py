@@ -74,8 +74,7 @@ async def staff_login_logic(data: StaffLoginIn, response: Response, db: AsyncSes
     return StaffLoginOut(
         staff_code=staff.staff_code,
         name=staff.name,
-        message="Đăng nhập thành công",
-        session_token=session_token
+        message="Đăng nhập thành công"
     )
 
 async def _record_failed_attempt(redis, key: str, current_attempts: int):
@@ -84,12 +83,8 @@ async def _record_failed_attempt(redis, key: str, current_attempts: int):
         await redis.expire(key, LOCK_TIME)
 
 async def get_current_staff(request: Request) -> dict:
-    # Accept token from Authorization header OR cookie
-    auth_header = request.headers.get("Authorization", "")
-    if auth_header.startswith("Bearer "):
-        session_token = auth_header[7:]
-    else:
-        session_token = request.cookies.get("session_token")
+    # Accept token ONLY from HttpOnly cookie
+    session_token = request.cookies.get("session_token")
     
     if not session_token:
         raise HTTPException(status_code=401, detail="Not authenticated")

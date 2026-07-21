@@ -13,7 +13,6 @@ class StaffLoginOut(BaseModel):
     staff_code: str
     name: str
     message: str
-    session_token: str  # Returned for cross-origin Bearer auth
 
 
 class StaffOut(BaseModel):

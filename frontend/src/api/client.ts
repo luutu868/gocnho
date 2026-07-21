@@ -13,20 +13,8 @@ const api = axios.create({
 api.interceptors.request.use((config) => {
   const url = config.url || "";
 
-  // If requesting a staff endpoint, use staff token
-  if (url.includes("/staff/")) {
-    const staffSession = localStorage.getItem("staff-session");
-    if (staffSession) {
-      try {
-        const { token, expiresAt } = JSON.parse(staffSession);
-        if (token && expiresAt > Date.now()) {
-          config.headers.Authorization = `Bearer ${token}`;
-        }
-      } catch {
-        /* ignore */
-      }
-    }
-  }
+  // Staff requests no longer need Authorization header because they use HttpOnly cookie
+
 
   return config;
 });
@@ -41,6 +29,11 @@ api.interceptors.response.use(
       // Pattern: /api/v1/admin/ but NOT /api/v1/auth/admin/
       if (url.includes("/api/v1/admin/") && !url.includes("/auth/")) {
         localStorage.removeItem("admin-auth");
+      }
+      
+      // Clear staff session on 401 from staff DATA endpoints
+      if (url.includes("/api/v1/staff/") && !url.includes("/auth/")) {
+        localStorage.removeItem("staff-storage");
       }
     }
     return Promise.reject(error);
