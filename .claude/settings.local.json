@@ -4,7 +4,9 @@
       "mcp__chrome-devtools__take_screenshot",
       "mcp__chrome-devtools__click",
       "mcp__chrome-devtools__take_snapshot",
-      "PowerShell(New-Item -ItemType Directory -Force -Path \"d:\\\\Dev Software\\\\CODE\\\\gocnho\\\\backend\\\\app\\\\routers\")"
+      "PowerShell(New-Item -ItemType Directory -Force -Path \"d:\\\\Dev Software\\\\CODE\\\\gocnho\\\\backend\\\\app\\\\routers\")",
+      "mcp__chrome-devtools__list_pages",
+      "mcp__chrome-devtools__navigate_page"
     ]
   }
 }
