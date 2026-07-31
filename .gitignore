@@ -63,35 +63,13 @@ backend/static/uploads/*
 !backend/static/uploads/products/
 
 # ClaudeKit framework (local only, not tracked)
-.claude/agents/
-.claude/command-archive/
-.claude/hooks/
-.claude/output-styles/
-.claude/rules/
-.claude/schemas/
-.claude/scripts/
-.claude/session-state/
-.claude/skills/
-.claude/.ck.json
-.claude/.ckignore
-.claude/.gitignore
-.claude/metadata.json
-.claude/settings.json
-.claude/statusline.cjs
-.claude/.env.example
-.claude/.env
-.claude/.mcp.json
-.claude/.mcp.json.example
-.claude/.gitignore
-plans/templates/
+.claude/
 .agents/
 
-# ClaudeKit supplementary docs (keep only PRD.md + TDD.md)
-docs/agent-teams-guide.md
-docs/code-standards.md
-docs/codebase-summary.md
-docs/project-overview-pdr.md
-docs/project-roadmap.md
-docs/skill-native-task.md
-docs/skills-interconnection-map.md
-docs/system-architecture.md
+# Plans (local only, not tracked)
+plans/
+
+# Docs — only keep PRD.md + TDD.md
+docs/*
+!docs/PRD.md
+!docs/TDD.md
