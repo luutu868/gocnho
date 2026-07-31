@@ -72,6 +72,23 @@ docker compose -f docker-compose.fe.yml -f docker-compose.be.yml up -d --build
 - [Technical Design Document (TDD)](docs/TDD.md)
 - [UI Prototype](ui-demo/)
 
+## 🎨 Recent Updates (2026-07-31)
+
+### UI/UX Improvements
+- ✅ Premium design với hover effects, micro-interactions
+- ✅ Skeleton loading, professional error/empty states
+- ✅ Accessibility compliance (WCAG AA)
+
+### Product Images
+- ✅ 22 placeholder images (aspect ratio 4:3)
+- ✅ Color-coded by category
+- ✅ Served from `backend/static/uploads/products/`
+
+**Docs:**
+- [UI Improvements](docs/ui-improvements-summary.md)
+- [UI Before/After](docs/ui-before-after.md)
+- [Product Images](scripts/README.md)
+
 ## License
 
 MIT
