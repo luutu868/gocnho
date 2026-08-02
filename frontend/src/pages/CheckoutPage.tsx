@@ -63,7 +63,7 @@ export default function CheckoutPage() {
     );
   }
 
-  const itemCount = order.items.reduce((acc, item) => acc + item.quantity, 0);
+  const itemCount = order.items.reduce((acc: number, item: { quantity: number }) => acc + item.quantity, 0);
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">

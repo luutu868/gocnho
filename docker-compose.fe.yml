@@ -12,6 +12,7 @@ services:
       - "443:443"
     volumes:
       - ./frontend/nginx/conf.d:/etc/nginx/conf.d:ro
+      - ./frontend/ssl:/etc/nginx/ssl:ro              # Mount SSL certs
       - ./certbot/conf:/etc/letsencrypt:ro
       - ./certbot/www:/var/www/certbot:ro
     networks:
@@ -31,3 +32,4 @@ services:
 networks:
   cafegocnho-net:
     external: true
+    name: cafegocnho-net

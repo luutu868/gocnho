@@ -11,11 +11,7 @@ const api = axios.create({
 });
 
 api.interceptors.request.use((config) => {
-  const url = config.url || "";
-
   // Staff requests no longer need Authorization header because they use HttpOnly cookie
-
-
   return config;
 });
 

@@ -39,11 +39,20 @@ export interface OrderInfo {
 
 export interface OrderResponse {
   order_code: string;
+  table_code: string;
+  items: Array<{
+    product_name: string;
+    variant_size: string;
+    quantity: number;
+    unit_price: number;
+    total_price: number;
+  }>;
   total_amount: number;
   qr_code_data: string | null;
   expires_at: string;
   bank_info: {
     bank_name: string;
+    bank_bin: string;
     account_no: string;
     account_name: string;
     amount: number;

@@ -23,8 +23,8 @@ describe('useCartStore (TCH-01, GIH-01, THA-01)', () => {
       'var_1',
       'M',
       30000,
-      [{ option_id: 'sugar_50', option_name: 'Đường', choice_id: '50', choice_name: '50%' }],
-      [{ topping_id: 'top_1', topping_name: 'Trân châu', price: 5000, quantity: 1 }],
+      [{ group_id: 'sugar', group_name: 'Đường', option_id: '50', value: '50%' }],
+      [{ id: 'top_1', name: 'Trân châu', price: 5000, quantity: 1 }],
       'Ít đá'
     );
 
@@ -35,7 +35,7 @@ describe('useCartStore (TCH-01, GIH-01, THA-01)', () => {
     // Check attributes
     expect(item.variantSize).toBe('M');
     expect(item.options.length).toBe(1);
-    expect(item.options[0].choice_name).toBe('50%');
+    expect(item.options[0].value).toBe('50%');
     expect(item.toppings.length).toBe(1);
     
     // Check totalPrice (Base 30k + Topping 5k)
@@ -52,7 +52,7 @@ describe('useCartStore (TCH-01, GIH-01, THA-01)', () => {
       'L',
       40000,
       [],
-      [{ topping_id: 'top_1', topping_name: 'Trân châu', price: 5000, quantity: 3 }],
+      [{ id: 'top_1', name: 'Trân châu', price: 5000, quantity: 3 }],
       ''
     );
 

@@ -23,9 +23,24 @@ describe('useMenuStore (MEN-01)', () => {
 
   // [Happy Path] Tải menu thành công
   it('should fetch menu successfully (happy path)', async () => {
-    const mockCategories = [{ id: '1', name: 'Cà phê', slug: 'ca-phe', image_url: '', is_active: true, sort_order: 1 }];
+    const mockCategories = [{ id: '1', name: 'Cà phê', slug: 'ca-phe', is_active: true, sort_order: 1, created_at: '' }];
     const mockProducts = [
-      { id: '1', name: 'Cà phê sữa đá', slug: 'cf-sua-da', description: 'Ngon', image_url: '', base_price: 30000, category_id: '1', is_active: true, created_at: '', updated_at: '', category: mockCategories[0], variants: [], has_options: false, has_toppings: false }
+      { 
+        id: '1', 
+        name: 'Cà phê sữa đá', 
+        slug: 'cf-sua-da', 
+        description: 'Ngon', 
+        category_id: '1', 
+        is_available: true, 
+        has_sugar_option: true,
+        has_ice_option: true,
+        sort_order: 1,
+        created_at: '', 
+        category: mockCategories[0], 
+        primary_image: null,
+        variants: [], 
+        toppings: []
+      }
     ];
 
     vi.mocked(api.fetchCategories).mockResolvedValue(mockCategories);
